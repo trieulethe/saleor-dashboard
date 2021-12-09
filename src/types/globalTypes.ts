@@ -2394,6 +2394,8 @@ export interface OrderFilterInput {
   channels?: (string | null)[] | null;
   isClickAndCollect?: boolean | null;
   isPreorder?: boolean | null;
+  giftCardUsed?: boolean | null;
+  giftCardBought?: boolean | null;
 }
 
 export interface OrderFulfillInput {
