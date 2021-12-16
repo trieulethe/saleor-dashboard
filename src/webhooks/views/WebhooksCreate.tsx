@@ -9,8 +9,8 @@ import { WebhookEventTypeAsync } from "@saleor/types/globalTypes";
 import React from "react";
 import { useIntl } from "react-intl";
 
-import { WebhookCreateFormData } from "../components/WebhookCreatePage/WebhookCreatePage";
 import WebhookDetailsPage from "../components/WebhookDetailsPage";
+import { WebhookFormData } from "../components/WebhooksDetailsPage/WebhooksDetailsPage";
 import { useWebhookCreateMutation } from "../mutations";
 import { WebhookCreate as WebhookCreateData } from "../types/WebhookCreate";
 import { webhookUrl } from "../urls";
@@ -41,7 +41,7 @@ export const WebhooksCreate: React.FC<WebhooksCreateProps> = ({ id }) => {
 
   const handleBack = () => navigate(customAppUrl(id));
 
-  const handleSubmit = (data: WebhookCreateFormData) =>
+  const handleSubmit = (data: WebhookFormData) =>
     extractMutationErrors(
       webhookCreate({
         variables: {
