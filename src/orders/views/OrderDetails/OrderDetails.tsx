@@ -86,14 +86,17 @@ export const OrderDetails: React.FC<OrderDetailsProps> = ({ id, params }) => {
           }
 
           const update = createMetadataUpdateHandler(
-            order,
+            {
+              id: order.token,
+              metadata: order.metadata,
+              privateMetadata: order.privateMetadata
+            },
             () => Promise.resolve([]),
             variables => updateMetadata({ variables }),
             variables => updatePrivateMetadata({ variables })
           );
 
           const result = await update(data);
-          console.log({ result });
 
           if (result.length === 0) {
             notify({

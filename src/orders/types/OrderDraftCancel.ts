@@ -221,7 +221,7 @@ export interface OrderDraftCancel_draftOrderDelete_order_fulfillments_lines_orde
 export interface OrderDraftCancel_draftOrderDelete_order_fulfillments_lines_orderLine_variant {
   __typename: "ProductVariant";
   id: string;
-  quantityAvailable: number;
+  quantityAvailable: number | null;
   preorder: OrderDraftCancel_draftOrderDelete_order_fulfillments_lines_orderLine_variant_preorder | null;
 }
 
@@ -323,7 +323,7 @@ export interface OrderDraftCancel_draftOrderDelete_order_lines_variant_preorder 
 export interface OrderDraftCancel_draftOrderDelete_order_lines_variant {
   __typename: "ProductVariant";
   id: string;
-  quantityAvailable: number;
+  quantityAvailable: number | null;
   preorder: OrderDraftCancel_draftOrderDelete_order_lines_variant_preorder | null;
 }
 
@@ -558,6 +558,7 @@ export interface OrderDraftCancel_draftOrderDelete_order_channel {
 export interface OrderDraftCancel_draftOrderDelete_order {
   __typename: "Order";
   id: string;
+  token: string;
   metadata: (OrderDraftCancel_draftOrderDelete_order_metadata | null)[];
   privateMetadata: (OrderDraftCancel_draftOrderDelete_order_privateMetadata | null)[];
   billingAddress: OrderDraftCancel_draftOrderDelete_order_billingAddress | null;

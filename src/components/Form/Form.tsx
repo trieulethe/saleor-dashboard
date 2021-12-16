@@ -3,7 +3,8 @@ import React from "react";
 
 import { FormId } from "./ExitFormDialogProvider";
 
-export interface FormProps<TData, TErrors> {
+export interface FormProps<TData, TErrors>
+  extends Omit<React.HTMLProps<HTMLFormElement>, "onSubmit"> {
   children: (props: UseFormResult<TData>) => React.ReactNode;
   confirmLeave?: boolean;
   initial?: TData;
@@ -19,7 +20,8 @@ function Form<TData, TErrors>(props: FormProps<TData, TErrors>) {
     resetOnSubmit,
     onSubmit,
     confirmLeave = false,
-    formId
+    formId,
+    ...rest
   } = props;
   const renderProps = useForm(initial, onSubmit, { confirmLeave, formId });
 
@@ -42,7 +44,11 @@ function Form<TData, TErrors>(props: FormProps<TData, TErrors>) {
     submit();
   }
 
-  return <form onSubmit={handleSubmit}>{children(renderProps)}</form>;
+  return (
+    <form {...rest} onSubmit={handleSubmit}>
+      {children(renderProps)}
+    </form>
+  );
 }
 Form.displayName = "Form";
 

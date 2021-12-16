@@ -22,6 +22,7 @@ export function createTypeProduct({
     productTypeCreate(input: {
       name: "${name}"
       slug: "${slug}"
+      isDigital: ${!shippable}
       ${productAttributesLine}
       hasVariants: ${hasVariants}
       ${variantAttributesLine}
@@ -41,23 +42,6 @@ export function createTypeProduct({
   return cy
     .sendRequestWithQuery(mutation)
     .its("body.data.productTypeCreate.productType");
-}
-
-export function productAttributeAssignmentUpdate({
-  productTypeId,
-  attributeId,
-  variantSelection = true
-}) {
-  const mutation = `mutation {
-    productAttributeAssignmentUpdate(
-      operations: {id: "${attributeId}", variantSelection: ${variantSelection}}    productTypeId:"${productTypeId}") {
-      errors {
-        field
-        message
-      }
-    }
-  }`;
-  return cy.sendRequestWithQuery(mutation);
 }
 
 export function getProductTypes(first, search) {
@@ -90,6 +74,23 @@ export function deleteProductType(productTypeId) {
   return cy.sendRequestWithQuery(mutation);
 }
 
+export function productAttributeAssignmentUpdate({
+  productTypeId,
+  attributeId,
+  variantSelection = true
+}) {
+  const mutation = `mutation {
+    productAttributeAssignmentUpdate(
+      operations: {id: "${attributeId}", variantSelection: ${variantSelection}}    productTypeId:"${productTypeId}") {
+      errors {
+        field
+        message
+      }
+    }
+  }`;
+  return cy.sendRequestWithQuery(mutation);
+}
+
 export function getProductType(productTypeId) {
   const query = `query{
     productType(id:"${productTypeId}"){
@@ -108,4 +109,37 @@ export function getProductType(productTypeId) {
     }
   }`;
   return cy.sendRequestWithQuery(query).its("body.data.productType");
+}
+
+export function createDigitalContent(variantId) {
+  const mutation = `mutation{
+    digitalContentCreate(input:{
+      useDefaultSettings:true,
+      automaticFulfillment: true,
+      contentFile:""
+    }, variantId:"${variantId}"){
+      content{
+        id
+      }
+      errors{
+        field
+        message
+      }
+    }
+  }`;
+  return cy.sendRequestWithQuery(mutation);
+}
+
+export function setProductTypeAsDigital(productTypeId, isDigital = true) {
+  const mutation = `mutation updateProductType{
+    productTypeUpdate(id:"${productTypeId}", input:{
+     isDigital:${isDigital}
+    }){
+     errors{
+       field
+       message
+     } 
+    }
+   }`;
+  return cy.sendRequestWithQuery(mutation);
 }

@@ -3,11 +3,18 @@ export const VARIANTS_SELECTORS = {
   valueContainer: "[data-test-id='value-container']",
   nextButton: "[class*='MuiButton-containedPrimary']",
   warehouseCheckboxes: "[name*='warehouse:']",
-  skuInput: "input[class*='MuiInputBase'][type='text']",
+  skuInput: "[ data-test-id='sku-input']",
   attributeSelector: "[data-test='attribute-value']",
   attributeOption: "[data-test-type='option']",
   addWarehouseButton: "button[class*='MuiIconButton-colorPrimary']",
   warehouseOption: "[role='menuitem']",
   saveButton: "[data-test='button-bar-confirm']",
-  skuInputInAddVariant: "[name='sku']"
+  skuInputInAddVariant: "[name='sku']",
+  preorderCheckbox: "[name='isPreorder']",
+  channelThresholdInput: "[name='channel-threshold']",
+  setUpEndDateButton: "[name='hasPreorderEndDate']",
+  preorderEndDateInput: "[name='preorderEndDateTime:date']",
+  preorderEndTimeInput: "[name='preorderEndDateTime:time']",
+  globalThresholdInput: "[name='globalThreshold']",
+  stockInput: "[data-test-id='stock-input']"
 };

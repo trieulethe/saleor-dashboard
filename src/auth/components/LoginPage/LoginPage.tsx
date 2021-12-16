@@ -152,7 +152,11 @@ const LoginCard: React.FC<LoginCardProps> = props => {
               description="description"
               values={{
                 resetPasswordLink: (
-                  <a className={classes.link} onClick={onPasswordRecovery}>
+                  <a
+                    className={classes.link}
+                    onClick={onPasswordRecovery}
+                    data-test-id="reset-password-link"
+                  >
                     <FormattedMessage
                       defaultMessage="Use this link to recover it"
                       description="link"

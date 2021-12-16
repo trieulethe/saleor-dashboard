@@ -221,7 +221,7 @@ export interface OrderVoid_orderVoid_order_fulfillments_lines_orderLine_variant_
 export interface OrderVoid_orderVoid_order_fulfillments_lines_orderLine_variant {
   __typename: "ProductVariant";
   id: string;
-  quantityAvailable: number;
+  quantityAvailable: number | null;
   preorder: OrderVoid_orderVoid_order_fulfillments_lines_orderLine_variant_preorder | null;
 }
 
@@ -323,7 +323,7 @@ export interface OrderVoid_orderVoid_order_lines_variant_preorder {
 export interface OrderVoid_orderVoid_order_lines_variant {
   __typename: "ProductVariant";
   id: string;
-  quantityAvailable: number;
+  quantityAvailable: number | null;
   preorder: OrderVoid_orderVoid_order_lines_variant_preorder | null;
 }
 
@@ -558,6 +558,7 @@ export interface OrderVoid_orderVoid_order_channel {
 export interface OrderVoid_orderVoid_order {
   __typename: "Order";
   id: string;
+  token: string;
   metadata: (OrderVoid_orderVoid_order_metadata | null)[];
   privateMetadata: (OrderVoid_orderVoid_order_privateMetadata | null)[];
   billingAddress: OrderVoid_orderVoid_order_billingAddress | null;
