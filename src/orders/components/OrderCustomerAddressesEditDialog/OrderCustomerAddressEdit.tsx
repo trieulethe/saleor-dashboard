@@ -93,7 +93,7 @@ const OrderCustomerAddressEdit: React.FC<OrderCustomerAddressEditProps> = props 
         className={classes.optionLabel}
       />
       {addressInputOption === AddressInputOptionEnum.CUSTOMER_ADDRESS &&
-        hideCard && (
+        !hideCard && (
           <>
             <CardSpacer />
             <CustomerAddressChoiceCard
