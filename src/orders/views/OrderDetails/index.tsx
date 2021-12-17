@@ -26,7 +26,6 @@ import {
   OrderUrlDialog,
   OrderUrlQueryParams
 } from "../../urls";
-import OrderAddressFields from "./OrderAddressFields";
 import { OrderDetailsMessages } from "./OrderDetailsMessages";
 import { OrderDraftDetails } from "./OrderDraftDetails";
 import { OrderNormalDetails } from "./OrderNormalDetails";
@@ -161,7 +160,7 @@ export const OrderDetails: React.FC<OrderDetailsProps> = ({ id, params }) => {
                   orderPaymentCapture,
                   orderVoid,
                   orderShippingMethodUpdate,
-                  orderUpdate,
+                  // orderUpdate,
                   orderFulfillmentCancel,
                   orderFulfillmentUpdateTracking,
                   orderDraftCancel,
@@ -239,7 +238,7 @@ export const OrderDetails: React.FC<OrderDetailsProps> = ({ id, params }) => {
                         closeModal={closeModal}
                       />
                     )}
-                    <OrderAddressFields
+                    {/* <OrderAddressFields
                       isDraft={order?.status === OrderStatus.DRAFT}
                       orderUpdate={orderUpdate}
                       orderDraftUpdate={orderDraftUpdate}
@@ -247,7 +246,7 @@ export const OrderDetails: React.FC<OrderDetailsProps> = ({ id, params }) => {
                       id={id}
                       onClose={closeModal}
                       action={params.action}
-                    />
+                    /> */}
                   </>
                 )}
               </OrderOperations>

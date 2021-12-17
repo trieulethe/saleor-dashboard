@@ -3,7 +3,10 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle
+  DialogTitle,
+  FormControlLabel,
+  Radio,
+  RadioGroup
 } from "@material-ui/core";
 import AddressEdit from "@saleor/components/AddressEdit";
 import ConfirmButton, {
@@ -23,6 +26,10 @@ import createSingleAutocompleteSelectHandler from "@saleor/utils/handlers/single
 import { mapCountriesToChoices } from "@saleor/utils/maps";
 import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
+
+import { AddressInputOptionEnum } from "../OrderCustomerAddressesEditDialog/form";
+import OrderCustomerAddressEdit from "../OrderCustomerAddressesEditDialog/OrderCustomerAddressEdit";
+import { orderAddressEditDialogMessages as messages } from "./messages";
 
 const useStyles = makeStyles(
   {
@@ -71,6 +78,9 @@ const OrderAddressEditDialog: React.FC<OrderAddressEditDialogProps> = props => {
   );
 
   const countryChoices = mapCountriesToChoices(countries);
+  const [addressInputOption, setAddressInputOption] = React.useState(
+    AddressInputOptionEnum.CUSTOMER_ADDRESS
+  );
 
   return (
     <Dialog onClose={onClose} open={open} classes={{ paper: classes.overflow }}>
@@ -86,16 +96,36 @@ const OrderAddressEditDialog: React.FC<OrderAddressEditDialogProps> = props => {
             <>
               <DialogTitle>
                 {variant === "billing"
-                  ? intl.formatMessage({
-                      defaultMessage: "Edit Billing Address",
-                      description: "dialog header"
-                    })
-                  : intl.formatMessage({
-                      defaultMessage: "Edit Shipping Address",
-                      description: "dialog header"
-                    })}
+                  ? intl.formatMessage(messages.billingTitle)
+                  : intl.formatMessage(messages.shippingTitle)}
               </DialogTitle>
               <DialogContent className={classes.overflow}>
+                <FormattedMessage {...messages.infoLabel} />
+                <RadioGroup
+                  value={null}
+                  onChange={evt => null /* onChangeAddressInputOption(event) */}
+                >
+                  <FormControlLabel
+                    value={AddressInputOptionEnum.CUSTOMER_ADDRESS}
+                    label={intl.formatMessage(messages.customerAddressLabel)}
+                    control={<Radio color="primary" />}
+                  />
+                  <FormControlLabel
+                    value={AddressInputOptionEnum.NEW_ADDRESS}
+                    label={intl.formatMessage(messages.newAddressLabel)}
+                    control={<Radio color="primary" />}
+                  />
+                </RadioGroup>
+                {/* <OrderCustomerAddressEdit
+                  loading={false}
+                  customerAddresses={[]}
+                  countryChoices={countryChoices}
+                  addressInputOption={addressInputOption}
+                  addressInputName="have a nice day"
+                  onChangeAddressInputOption={() => null}
+
+
+                /> */}
                 <AddressEdit
                   countries={countryChoices}
                   countryDisplayValue={countryDisplayName}
