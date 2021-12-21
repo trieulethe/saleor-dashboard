@@ -147,7 +147,7 @@ export const OrderDraftDetails: React.FC<OrderDraftDetailsProps> = ({
     }
   };
 
-  const handleCustomerChangeAdresses = async (
+  const handleCustomerChangeAddresses = async (
     data: OrderCustomerAddressesEditDialogOutput
   ) => {
     const result = await orderDraftUpdate.mutate({
@@ -277,7 +277,7 @@ export const OrderDraftDetails: React.FC<OrderDraftDetailsProps> = ({
         countries={data?.shop?.countries}
         customer={customerAddresses?.user}
         onClose={closeModal}
-        onConfirm={handleCustomerChangeAdresses}
+        onConfirm={handleCustomerChangeAddresses}
         orderDraftUpdate={orderDraftUpdate}
       />
     </>

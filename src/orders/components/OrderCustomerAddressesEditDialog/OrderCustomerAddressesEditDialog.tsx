@@ -168,7 +168,7 @@ const OrderCustomerAddressesEditDialog: React.FC<OrderCustomerAddressesEditDialo
     return <FormattedMessage {...dialogMessages.addressChangeDescription} />;
   };
 
-  const handleSubmit = (data: OrderCustomerAddressesEditFormData) => {
+  const handleSubmit = async (data: OrderCustomerAddressesEditFormData) => {
     if (continueToSearchAddressesState(data)) {
       setAddressSearchState({
         open: true,
@@ -183,9 +183,10 @@ const OrderCustomerAddressesEditDialog: React.FC<OrderCustomerAddressesEditDialo
     const adressesInput = handleAddressesSubmit(data);
 
     if (adressesInput.shippingAddress && adressesInput.billingAddress) {
-      onConfirm(adressesInput);
+      onConfirm(adressesInput).then(() =>
+        setAddressSearchState(defaultSearchState)
+      );
     }
-    setAddressSearchState(defaultSearchState);
   };
 
   const countryChoices = mapCountriesToChoices(countries);
@@ -223,9 +224,14 @@ const OrderCustomerAddressesEditDialog: React.FC<OrderCustomerAddressesEditDialo
             {addressSearchState.open ? (
               <OrderCustomerAddressesSearch
                 type={addressSearchState?.type}
+                transitionState={confirmButtonState}
                 data={data}
                 customerAddresses={customerAddresses}
-                submit={handleSubmit}
+                submit={
+                  variant !== AddressEditDialogVariant.CHANGE_CUSTOMER
+                    ? handleSubmit
+                    : undefined
+                }
                 selectedCustomerAddressId={
                   addressSearchState.type === AddressTypeEnum.SHIPPING
                     ? data.customerShippingAddress?.id
