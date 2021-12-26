@@ -66,7 +66,9 @@ export interface OrderCustomerAddressesEditDialogProps {
   defaultShippingAddress?: CustomerAddresses_user_defaultShippingAddress;
   defaultBillingAddress?: CustomerAddresses_user_defaultBillingAddress;
   onClose();
-  onConfirm(data: OrderCustomerAddressesEditDialogOutput): SubmitPromise;
+  onConfirm(
+    data: Partial<OrderCustomerAddressesEditDialogOutput>
+  ): SubmitPromise;
 }
 
 const defaultSearchState: OrderCustomerSearchAddressState = {
@@ -122,7 +124,9 @@ const OrderCustomerAddressesEditDialog: React.FC<OrderCustomerAddressesEditDialo
       customerAddresses.find(getById(selectedCustomerAddressID))
     );
 
-  const handleAddressesSubmit = (data: OrderCustomerAddressesEditFormData) => {
+  const handleAddressesSubmit = (
+    data: OrderCustomerAddressesEditFormData
+  ): Partial<OrderCustomerAddressesEditDialogOutput> => {
     const shippingAddress =
       customerAddresses.length > 0 &&
       data.shippingAddressInputOption ===
@@ -130,22 +134,29 @@ const OrderCustomerAddressesEditDialog: React.FC<OrderCustomerAddressesEditDialo
         ? getCustomerAddress(data.customerShippingAddress.id)
         : handleShippingSubmit(data.shippingAddress);
 
-    if (data.billingSameAsShipping) {
-      return {
-        shippingAddress,
-        billingAddress: shippingAddress
-      };
-    }
-
     const billingAddress =
       customerAddresses.length > 0 &&
       data.billingAddressInputOption === AddressInputOptionEnum.CUSTOMER_ADDRESS
         ? getCustomerAddress(data.customerBillingAddress.id)
         : handleBillingSubmit(data.billingAddress);
 
+    if (variant === AddressEditDialogVariant.CHANGE_SHIPPING_ADDRESS) {
+      return {
+        shippingAddress,
+        ...(data.billingSameAsShipping && { billingAddress: shippingAddress })
+      };
+    }
+    if (variant === AddressEditDialogVariant.CHANGE_BILLING_ADDRESS) {
+      return {
+        ...(data.billingSameAsShipping && { shippingAddress: billingAddress }),
+        billingAddress
+      };
+    }
     return {
       shippingAddress,
-      billingAddress
+      billingAddress: data.billingSameAsShipping
+        ? shippingAddress
+        : billingAddress
     };
   };
 
@@ -180,9 +191,9 @@ const OrderCustomerAddressesEditDialog: React.FC<OrderCustomerAddressesEditDialo
       return;
     }
 
-    const adressesInput = handleAddressesSubmit(data);
-    if (adressesInput.shippingAddress && adressesInput.billingAddress) {
-      onConfirm(adressesInput).then(() =>
+    const addressesInput = handleAddressesSubmit(data);
+    if (addressesInput) {
+      onConfirm(addressesInput).then(() =>
         setAddressSearchState(defaultSearchState)
       );
     }
@@ -216,6 +227,7 @@ const OrderCustomerAddressesEditDialog: React.FC<OrderCustomerAddressesEditDialo
         countryChoices={countryChoices}
         defaultShippingAddress={validatedDefaultShippingAddress}
         defaultBillingAddress={validatedDefaultBillingAddress}
+        defaultBillingSameAsShipping={hasCustomerChanged}
         onSubmit={handleSubmit}
       >
         {({ change, data, handlers }) => (
