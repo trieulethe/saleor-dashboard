@@ -181,7 +181,6 @@ const OrderCustomerAddressesEditDialog: React.FC<OrderCustomerAddressesEditDialo
     }
 
     const adressesInput = handleAddressesSubmit(data);
-
     if (adressesInput.shippingAddress && adressesInput.billingAddress) {
       onConfirm(adressesInput).then(() =>
         setAddressSearchState(defaultSearchState)
@@ -223,15 +222,10 @@ const OrderCustomerAddressesEditDialog: React.FC<OrderCustomerAddressesEditDialo
           <>
             {addressSearchState.open ? (
               <OrderCustomerAddressesSearch
+                openFromCustomerChange={hasCustomerChanged}
                 type={addressSearchState?.type}
                 transitionState={confirmButtonState}
-                data={data}
                 customerAddresses={customerAddresses}
-                submit={
-                  variant !== AddressEditDialogVariant.CHANGE_CUSTOMER
-                    ? handleSubmit
-                    : undefined
-                }
                 selectedCustomerAddressId={
                   addressSearchState.type === AddressTypeEnum.SHIPPING
                     ? data.customerShippingAddress?.id
