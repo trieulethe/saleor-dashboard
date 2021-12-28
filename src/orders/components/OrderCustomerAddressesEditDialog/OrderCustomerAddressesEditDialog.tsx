@@ -294,7 +294,7 @@ const OrderCustomerAddressesEditDialog: React.FC<OrderCustomerAddressesEditDialo
               <OrderCustomerAddressesSearch
                 openFromCustomerChange={hasCustomerChanged}
                 type={addressSearchState?.type}
-                billingSameAsShipping={data.cloneAddress}
+                cloneAddress={data.cloneAddress}
                 formChange={change}
                 transitionState={confirmButtonState}
                 customerAddresses={customerAddresses}
