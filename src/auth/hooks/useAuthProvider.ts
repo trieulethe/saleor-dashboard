@@ -48,6 +48,7 @@ export function useAuthProvider({
   } = useAuth();
   const { authenticated, authenticating, user } = useAuthState();
   const [error, setError] = useState<UserContextError>();
+  const [permitCredentialsAPI, setPermitCredentialsAPI] = useState(true);
 
   useEffect(() => {
     if (authenticating && error) {
@@ -56,15 +57,23 @@ export function useAuthProvider({
   }, [authenticating]);
 
   useEffect(() => {
-    if (!authenticated && !authenticating) {
+    if (!authenticated && !authenticating && permitCredentialsAPI) {
+      setPermitCredentialsAPI(false);
       loginWithCredentialsManagementAPI(handleLogin);
     }
   }, [authenticated, authenticating]);
 
   const userDetails = useQuery<UserDetails>(userDetailsQuery, {
     client: apolloClient,
-    skip: !authenticated
+    skip: !authenticated,
+    fetchPolicy: "cache-and-network"
   });
+
+  useEffect(() => {
+    if (authenticated) {
+      setPermitCredentialsAPI(true);
+    }
+  }, [authenticated]);
 
   const handleLogout = async () => {
     const result = await logout({
@@ -79,6 +88,10 @@ export function useAuthProvider({
     if (isCredentialsManagementAPISupported) {
       navigator.credentials.preventSilentAccess();
     }
+
+    // Forget last logged in user data.
+    // On next login, user details query will be refetched due to cache-and-network fetch policy.
+    apolloClient.clearStore();
 
     if (!result) {
       return;
